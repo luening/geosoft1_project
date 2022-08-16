@@ -1,2 +1,15 @@
-# geosoft1_project
-Repository of the Geosoftware 1 Project. Map-based, interactive web application for mountains in europe.
+# geosoft1_gruppenuebung
+Geosoftware1 Aufgabe 7
+
+    download docker-compose.yaml file
+    go to CLI and run 'docker-compose up' at the path of docker-compose.yaml file
+
+Path to Dockerhub:
+
+https://hub.docker.com/repository/docker/luening/geosoft1_gruppenuebung
+
+Authors: Hendrik Lüning, Robert Schmitz
+
+
+
+
