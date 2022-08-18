@@ -2,10 +2,9 @@ var express = require("express");
 var router = express.Router();
 const MongoClient = require("mongodb").MongoClient;
 const assert = require("assert");
-const app = express(); //initialize express app
 
-const url = "mongodb://mongo:27017"; // connection URL
-const client = new MongoClient(url); // mongodb client
+const url = "mongodb://127.0.0.1:27017"; // connection URL
+const client = new MongoClient(url, { useUnifiedTopology: true}); // mongodb client
 const dbName = "mydatabase"; // database name
 const collectionName = "mountain"; // collection name
 
