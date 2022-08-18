@@ -1,7 +1,6 @@
 //Inputs
 var long = document.getElementById("long");
 var lat = document.getElementById("lat");
-console.log(long);
 
 //Leaflet
 var map = L.map("map").setView([51.96, 7.62], 13);
