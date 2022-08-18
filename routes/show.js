@@ -6,7 +6,7 @@ const assert = require("assert");
 const url = "mongodb://mongo:27017"; // connection URL
 const client = new MongoClient(url); // mongodb client
 const dbName = "mydatabase"; // database name
-const collectionName = "pois"; // collection name
+const collectionName = "mountain"; // collection name
 
 router.get("/", function (req, res, next) {
   // connect to the mongodb database and retrieve all docs

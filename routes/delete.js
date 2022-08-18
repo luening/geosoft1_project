@@ -9,16 +9,16 @@ const app = express(); //initialize express app
 const url = "mongodb://mongo:27017"; // connection URL
 const client = new MongoClient(url); // mongodb client
 const dbName = "mydatabase"; // database name
-const collectionName = "pois"; // collection name
+const collectionName = "mountain"; // collection name
 
 /* GET home page. */
 router.get("/", function (req, res, next) {
-  res.render("delete", { title: "PoIs löschen" });
+  res.render("delete", { title: "Gebirge löschen" });
 });
 
 //Post Location - this post operation can be used to store new locations in the locations collection
-router.post("/delete_poi", function (req, res, next) {
-  console.log("PoI deleted!");
+router.post("/delete_mountain", function (req, res, next) {
+  console.log("Mountain deleted!");
 
   var poiName = req.body.poiname;
 

@@ -6,20 +6,20 @@ const assert = require("assert");
 const url = "mongodb://mongo:27017"; // connection URL
 const client = new MongoClient(url); // mongodb client
 const dbName = "mydatabase"; // database name
-const collectionName = "pois"; // collection name
+const collectionName = "mountain"; // collection name
 
 /* GET home page. */
 router.get("/", function (req, res, next) {
-  res.render("add", { title: "PoIs hinzufügen" });
+  res.render("add", { title: "Gebirge hinzufügen" });
 });
 
-router.post("/add/newpoi", function (req, res, next) {
+router.post("/add/newMountain", function (req, res, next) {
   if (req.body.poiname == "" || req.body.long == "" || req.body.lat == "") {
     res.render("notification", {
-      title: "PoI konnte nicht hinzugefügt werden. Überprüfe Eingabe!",
+      title: "Gebirge konnte nicht hinzugefügt werden. Überprüfe Eingabe!",
     });
   }else {
-    console.log("A new poi has been added");
+    console.log("A new Mountain has been added");
 
     let poi = {
       type: "Feature",
