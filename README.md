@@ -1,4 +1,4 @@
-# geosoft1_project
+# Geosoft1 Project
 Geosoftware1 Project
 
     download docker-compose.yaml file
