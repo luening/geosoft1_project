@@ -1,5 +1,5 @@
 //Leaflet
-var map = L.map("map").setView([51.96, 7.62], 13);
+var map = L.map("map").setView([49.845363, 9.905964], 4);
 
 L.tileLayer("http://{s}.tile.osm.org/{z}/{x}/{y}.png", {
   attribution:
