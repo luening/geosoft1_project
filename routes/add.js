@@ -13,20 +13,23 @@ router.get("/", function (req, res, next) {
   res.render("add", { title: "Gebirge hinzufügen" });
 });
 
-router.post("/add/newMountain", function (req, res, next) {
-  if (req.body.poiname == "" || req.body.long == "" || req.body.lat == "") {
+router.post("/new_mountain", function (req, res, next) {
+  if (req.body.mountain == "" || req.body.height == "" || req.body.long == "" || req.body.lat == "") {
     res.render("notification", {
       title: "Gebirge konnte nicht hinzugefügt werden. Überprüfe Eingabe!",
     });
   }else {
     console.log("A new Mountain has been added");
 
-    let poi = {
+    let mountain = {
       type: "Feature",
       properties: {
         shape: "Marker",
-        name: req.body.poiname,
-        category: "default",
+        name: req.body.mountain,
+        height: req.body.height,
+        url: req.body.url,
+        description: "",
+        category: "default"
       },
       geometry: {
         type: "Point",
@@ -34,7 +37,7 @@ router.post("/add/newMountain", function (req, res, next) {
       },
     };
 
-    console.log(poi);
+    console.log(mountain);
 
     // connect to the mongodb database and afterwards, insert one the new element
     client.connect(function (err) {
@@ -46,12 +49,12 @@ router.post("/add/newMountain", function (req, res, next) {
       const collection = db.collection(collectionName);
 
       // Insert the document in the database
-      collection.insertOne(poi, function (err, result) {
+      collection.insertOne(mountain, function (err, result) {
         //assert.equal(err, null);
         //assert.equal(1, result.result.ok);
         console.log(
           `Inserted ${result.insertedCount} document into the collection`);
-        res.render("notification", { title: "PoI hinzugefügt!" });
+        res.render("notification", { title: "Gebirge hinzugefügt!" });
       });
     });
   };
