@@ -56,7 +56,7 @@ router.post("/new_mountain_file", function (req, res, next) {
 
       const description = getWikiSnippet(mountain.properties.url);
       mountain.properties.description = description;
-      
+
       console.log("A new Mountain has been added");
       console.log(mountain);
 
@@ -86,7 +86,7 @@ router.post("/new_mountain_file", function (req, res, next) {
 
 // added Mountain through Leaflet
 router.post("/new_mountain_leaflet", function (req, res, next) {
-  if (req.body.mountain == "" || req.body.height == "" || req.body.long == "" || req.body.lat == "") {
+  if (req.body.mountain == "" || req.body.altitude == "" || req.body.long == "" || req.body.lat == "") {
     res.render("notification", {
       title: "Gebirge konnte nicht hinzugefügt werden. Überprüfe Eingabe!",
     });
@@ -100,7 +100,7 @@ router.post("/new_mountain_leaflet", function (req, res, next) {
       "properties": {
         "shape": "Marker",
         "name": req.body.mountain,
-        "height": req.body.height,
+        "altitude": req.body.altitude,
         "url": req.body.url,
         "description": description,
       },
@@ -140,7 +140,7 @@ router.post("/new_mountain_leaflet", function (req, res, next) {
  * @returns 
  */
 function validateGeoJSON(file, res) {
-  if (file.name == "" || file.height == "" || file.url == "") {
+  if (file.name == "" || file.altitude == "" || file.url == "") {
     res.render("notification", {
       title: "Gebirge konnte nicht hinzugefügt werden. Überprüfe Eingabe!",
     });

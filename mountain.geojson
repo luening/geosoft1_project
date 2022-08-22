@@ -1,0 +1,16 @@
+{
+"type": "Feature",
+"geometry": {
+"type": "Point",
+"coordinates": [
+21.265497207641598,
+69.30795043076344
+]
+},
+"properties": {
+"name": "Haltiatunturi",
+"altitude": 1365,
+"url": "https://en.wikipedia.org/wiki/Halti",
+"description": " "
+}
+}
