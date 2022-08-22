@@ -21,7 +21,7 @@ router.get("/", function (req, res, next) {
     collection.find({}).toArray(function (err, docs) {
       assert.equal(err, null);
       console.log('Found the following records...');
-      res.render('show', { title: 'PoIs anzeigen', data: docs });
+      res.render('show', { title: 'Gebirge anzeigen', data: docs });
 
     })
 
