@@ -5,18 +5,26 @@ block content
   p Welcome to #{title}
   br
   br
-  form(action='/add/newmountain' method='post')
+  form(action='/add/new_mountain' method='post')
     fieldset
       .form-group.row
-        label.col-sm-1.col-form-label(for='poiname') POI Name
+        label.col-sm-1.col-form-label(for='mountain') Gebirgsname
         .col-sm-4
-          input#name.form-control(type='text' name="poiname")
+          input#name.form-control(type='text' name="mountain")
       .form-group.row
-        label.col-sm-1.col-form-label(for='coordinates-long') Longitude
+        label.col-sm-1.col-form-label(for='height') Höhe
+        .col-sm-4
+          input#height.form-control(type='text' name="height")
+      .form-group.row
+        label.col-sm-1.col-form-label(for='url') Wikipedia-URL
+        .col-sm-4
+          input#url.form-control(type='text' name="url")
+      .form-group.row
+        label.col-sm-1.col-form-label(for='long') Longitude
         .col-sm-4
           input#long.form-control(type='text' name="long")
       .form-group.row
-        label.col-sm-1.col-form-label(for='coordinates-lat') Latitude
+        label.col-sm-1.col-form-label(for='lat') Latitude
         .col-sm-4
           input#lat.form-control(type='text' name="lat")
       button.btn.btn-primary.mb-2(type='submit') Speichern
