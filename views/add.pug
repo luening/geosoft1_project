@@ -5,7 +5,26 @@ block content
   p Welcome to #{title}
   br
   br
-  form(action='/add/new_mountain' method='post')
+  br
+  form(action='/add/new_mountain_textfield' method='post')
+    fieldset
+      .form-group.row
+        label.col-sm-1.col-form-label(for='mountain') GeoJSON-Datei per Textfeld einfügen
+        .col-sm-4
+          input#textfield.form-control(type='textarea' name="textfield" rows="50" cols="50")
+      button.btn.btn-primary.mb-2(type='submit') Speichern
+  br
+  br
+  form(action='/add/new_mountain_file' method='post')
+    fieldset
+      .form-group.row
+        label.col-sm-1.col-form-label(for='mountain') GeoJSON-Datei per Upload einfügen
+        .col-sm-4
+          input#file.form-control(type='file' name="file")
+      button.btn.btn-primary.mb-2(type='submit') Speichern
+  br
+  br
+  form(action='/add/new_mountain_leaflet' method='post')
     fieldset
       .form-group.row
         label.col-sm-1.col-form-label(for='mountain') Gebirgsname
