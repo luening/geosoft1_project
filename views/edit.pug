@@ -5,10 +5,34 @@ block content
   p Welcome to #{title}
   br
   br
-  form(action='/delete/delete_mountain' method='post')
+  form(action='/edit/search_mountain' method='post')
     fieldset
       .form-group.row
         label.col-sm-1.col-form-label(for='mountain') Gebirge
         .col-sm-4
-          input#name.form-control(type='text' name="mountain")
+          input#mountain.form-control(type='text' name="mountain")
+      button.btn.btn-primary.mb-2(type='submit') Suchen
+      .form-group.row
+        label.col-sm-1.col-form-label(for='altitude') Höhe
+        .col-sm-4
+          input#altitude.form-control(type='text' name="altitude")
+      .form-group.row
+        label.col-sm-1.col-form-label(for='url') URL
+        .col-sm-4
+          input#url.form-control(type='text' name="url")
+      .form-group.row
+        label.col-sm-1.col-form-label(for='long') Longitude
+        .col-sm-4
+          input#long.form-control(type='text' name="long")
+      .form-group.row
+        label.col-sm-1.col-form-label(for='lat') Latitude
+        .col-sm-4
+          input#lat.form-control(type='text' name="lat")
+
+  form(action='/edit/delete_mountain' method='post')
+    fieldset
       button.btn.btn-primary.mb-2(type='submit') Löschen
+
+  form(action='/edit/update_mountain' method='post')
+    fieldset
+      button.btn.btn-primary.mb-2(type='submit') Bearbeiten
