@@ -5,6 +5,7 @@ const assert = require("assert");
 
 const gjv = require("geojson-validation");
 const fs = require("fs");
+const axios = require("axios");
 
 const url = "mongodb://127.0.0.1:27017"; // connection URL
 const client = new MongoClient(url, { useUnifiedTopology: true }); // mongodb client
@@ -21,14 +22,18 @@ router.get("/", function (req, res, next) {
 router.post("/new_mountain_textfield", function (req, res, next) {
   mountain = JSON.parse(req.body.textfield);
   if (validateGeoJSON(mountain, res)) {
-    console.log("A new Mountain has been added");
-    console.log(mountain);
+
+    const description = getWikiSnippet(mountain.properties.url);
+    mountain.properties.description = description;
+
 
     // connect to the mongodb database and afterwards, insert one the new element
     client.connect(function (err) {
       //assert.equal(null, err);
 
       console.log("Connected successfully to server");
+      console.log("A new Mountain has been added");
+      console.log(mountain);
 
       const db = client.db(dbName);
       const collection = db.collection(collectionName);
@@ -39,7 +44,7 @@ router.post("/new_mountain_textfield", function (req, res, next) {
         //assert.equal(1, result.result.ok);
         console.log(
           `Inserted ${result.insertedCount} document into the collection`);
-        res.render("notification", { title: "Gebirge hinzugefügt!" });
+        res.render("notification", { title: "Gebirge hinzugefügt!", data: JSON.stringify(mountain) });
       });
     });
   }
@@ -57,14 +62,13 @@ router.post("/new_mountain_file", function (req, res, next) {
       const description = getWikiSnippet(mountain.properties.url);
       mountain.properties.description = description;
 
-      console.log("A new Mountain has been added");
-      console.log(mountain);
-
       // connect to the mongodb database and afterwards, insert one the new element
       client.connect(function (err) {
         //assert.equal(null, err);
 
         console.log("Connected successfully to server");
+        console.log("A new Mountain has been added");
+        console.log(mountain);
 
         const db = client.db(dbName);
         const collection = db.collection(collectionName);
@@ -75,7 +79,7 @@ router.post("/new_mountain_file", function (req, res, next) {
           //assert.equal(1, result.result.ok);
           console.log(
             `Inserted ${result.insertedCount} document into the collection`);
-          res.render("notification", { title: "Gebirge hinzugefügt!" });
+          res.render("notification", { title: "Gebirge hinzugefügt!", data: JSON.stringify(mountain) });
         });
       });
     }
@@ -91,7 +95,6 @@ router.post("/new_mountain_leaflet", function (req, res, next) {
       title: "Gebirge konnte nicht hinzugefügt werden. Überprüfe Eingabe!",
     });
   } else {
-    console.log("A new Mountain has been added");
 
     const description = getWikiSnippet(req.body.url);
 
@@ -102,21 +105,21 @@ router.post("/new_mountain_leaflet", function (req, res, next) {
         "name": req.body.mountain,
         "altitude": req.body.altitude,
         "url": req.body.url,
-        "description": description,
+        "description": description
       },
       "geometry": {
         "type": "Point",
-        "coordinates": [req.body.long, req.body.lat],
+        "coordinates": [req.body.long, req.body.lat]
       },
     };
-
-    console.log(mountain);
 
     // connect to the mongodb database and afterwards, insert one the new element
     client.connect(function (err) {
       //assert.equal(null, err);
 
       console.log("Connected successfully to server");
+      console.log("A new Mountain has been added");
+      console.log(mountain);
 
       const db = client.db(dbName);
       const collection = db.collection(collectionName);
@@ -127,7 +130,7 @@ router.post("/new_mountain_leaflet", function (req, res, next) {
         //assert.equal(1, result.result.ok);
         console.log(
           `Inserted ${result.insertedCount} document into the collection`);
-        res.render("notification", { title: "Gebirge hinzugefügt!" });
+        res.render("notification", { title: "Gebirge hinzugefügt!", data: JSON.stringify(mountain) });
       });
     });
   };
@@ -155,15 +158,51 @@ function validateGeoJSON(file, res) {
   return true;
 };
 
-function getWikiSnippet(wikiURL){
-  const url = ""
-  fetch("url")
-        .then(response => response.json())
-        .then(data => {
-            const busstationArray = generateBusstations(data.features);
-            const busstationsDistance = distance(point, busstationArray);
-            markBusstations(busstationsDistance);
-        })
+/**
+ * if url is valide and a wikipedia-url
+ * then returns the snippet from Wikipedia with the WikipediaAPI
+ * otherwise returns "Keine Informationen verfügbar"
+ * @param {*} url 
+ * @returns description
+ */
+function getWikiSnippet(url) {
+  let description = "";
+  if (!isValidUrl(url) || url.indexOf("wikipedia") === -1) {
+    description = "Keine Informationen verfügbar";
+    console.log("not valid: " + description);
+    return description;
+  } else {
+    let urlArray = url.split("/");
+    let title = urlArray[urlArray.length - 1];
+    axios.get(
+      "https://de.wikipedia.org/w/api.php?format=json&exintro=1&action=query&prop=extracts&explaintext=1&exsentences=1&origin=*&titles=" + title
+    )
+      .then(function (response) {
+        const pageKey = Object.keys(response.data.query.pages)[0];
+        const result = "\"" + response.data.query.pages[pageKey].extract + "\"";
+        console.log("valid: " + result);
+        return result;
+      });
+  }
+}
+
+
+/**
+ * Validation of URLs
+ * https://stackoverflow.com/questions/5717093/check-if-a-javascript-string-is-a-url
+ * @param {*} string 
+ * @returns 
+ */
+function isValidUrl(string) {
+  let url;
+
+  try {
+    url = new URL(string);
+  } catch (_) {
+    return false;
+  }
+
+  return url.protocol === "http:" || url.protocol === "https:";
 }
 
 module.exports = router;
