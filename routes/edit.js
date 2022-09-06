@@ -3,48 +3,34 @@ var router = express.Router();
 const MongoClient = require("mongodb").MongoClient;
 const assert = require("assert");
 
-const url = "mongodb://127.0.0.1:27017"; // connection URL
+const url = "mongodb://localhost:27017"; // connection URL
 const client = new MongoClient(url, { useUnifiedTopology: true}); // mongodb client
 const dbName = "mydatabase"; // database name
 const collectionName = "mountain"; // collection name
 
 /* GET home page. */
 router.get("/", function (req, res, next) {
-  res.render("edit", { title: "Gebirge bearbeiten" });
-});
-
-
-//Post Location - this post operation can be used to store new locations in the locations collection
-router.post("/search_mountain", function (req, res, next) {
-
-  var mountain = req.body.mountain;
-  console.log(mountain);
-  //Check if Name exists
+  // connect to the mongodb database and retrieve all docs
   client.connect(function (err) {
+    assert.equal(null, err);
+
+    console.log('Connected successfully to server');
+
     const db = client.db(dbName);
     const collection = db.collection(collectionName);
-    collection.find({"properties.name": mountain}).toArray(function (err, docs) {
-      if (docs.length >= 1) {
-        //if the locations exists and is not in use
-        req.body.altitude = docs[0].properties.altitude;
-        req.body.url = docs[0].properties.url;
-        req.body.long = docs[0].geometry.coordinates[0];
-        req.body.lat = docs[0].geometry.coordinates[1];
 
-      } else {
-        //if the location does not exist
-        res.render("notification", {
-          title: "Gebirge nicht vorhanden. Überprüfe Eingabe!",
-        });
-      }
-    });
-  });
+    collection.find({}).toArray(function (err, docs) {
+      assert.equal(err, null);
+      console.log('Found the following records...');
+      res.render('edit', { title: 'Gebirge bearbeiten', data: docs });
+
+    })
+
+  })
 });
-
 
 
 router.post("/delete_mountain", function (req, res, next) {
-  console.log("Mountain deleted!");
 
   var mountain = req.body.mountain;
 
@@ -58,8 +44,10 @@ router.post("/delete_mountain", function (req, res, next) {
         collection.deleteOne({"properties.name": mountain}, function (err, results) {
           //delete the mountain from the mountain collection
         });
+        console.log("Mountain deleted!");
         res.render("notification", {
           title: "Gebirge wurde gelöscht.",
+          
         });
       } else {
         //if the mountain does not exist
