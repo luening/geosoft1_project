@@ -2,14 +2,14 @@ extends layout
 
 block content
   h1= title
-  p Welcome to #{title}
+  p Hier können Sie neue Gebirge hinzufügen. Dafür können Sie entweder Gebirge im GeoJSON-Format mit dem Textfeld hinzufügen, eine GeoJson-Datei hinzufügen oder ein Gebirge mit den Eingabefeldern und der Leaflet-Karte einfügen.
   br
   br
   br
   form(action='/add/new_mountain_textfield' method='post')
     fieldset
       .form-group.row
-        label.col-sm-1.col-form-label(for='mountain') GeoJSON-Datei per Textfeld einfügen
+        label.col-sm-1.col-form-label(for='mountain') Gebirge im GeoJSON-Format per Textfeld einfügen:
         .col-sm-4
           input#textfield.form-control(type='textarea' name="textfield" rows="50" cols="50")
       button.btn.btn-primary.mb-2(type='submit') Speichern
@@ -18,7 +18,7 @@ block content
   form(action='/add/new_mountain_file' method='post')
     fieldset
       .form-group.row
-        label.col-sm-1.col-form-label(for='mountain') GeoJSON-Datei per Upload einfügen
+        label.col-sm-1.col-form-label(for='mountain') Gebirge als GeoJSON-Datei per Upload einfügen:
         .col-sm-4
           input#file.form-control(type='file' name="file" accept=".json, .geojson")
       button.btn.btn-primary.mb-2(type='submit') Speichern
