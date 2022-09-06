@@ -23,6 +23,8 @@ router.get("/", function (req, res, next) {
 
 // added Mountain through textfield
 router.post("/new_mountain_textfield", function (req, res, next) {
+
+  // try parsing of input text
   try {
     JSON.parse(req.body.textfield);
   }
@@ -68,6 +70,7 @@ router.post("/new_mountain_file", function (req, res, next) {
 
   fs.readFile(req.body.file, "utf8", function (err, data) {
 
+    // try parsing of input text
     try {
       JSON.parse(data);
     }
@@ -78,7 +81,7 @@ router.post("/new_mountain_file", function (req, res, next) {
     }
     let mountain = JSON.parse(data);
 
-    if (validateGeoJSON(mountain, res)) {
+    if (validateFormat(mountain, res)) {
 
       getWikiSnippet(mountain.properties.url);
 
@@ -169,36 +172,49 @@ router.post("/new_mountain_leaflet", function (req, res, next) {
  */
 function validateFormat(geojson, res) {
 
+  //Properties
   if (geojson.properties == null) {
     res.render("notification", {
       title: "Gebirge konnte nicht hinzugefügt werden. Überprüfe Angabe von Properties!",
     });
     return false;
+    //Name
   } else if (geojson.properties.name == null || geojson.properties.name == "") {
     res.render("notification", {
-      title: "Gebirge konnte nicht hinzugefügt werden. Überprüfe Parameter Name!",
+      title: "Gebirge konnte nicht hinzugefügt werden. Überprüfe Attribut Name!",
     });
     return false;
+    //Altitude
   } else if (geojson.properties.altitude == null || geojson.properties.altitude == "") {
     res.render("notification", {
-      title: "Gebirge konnte nicht hinzugefügt werden. Überprüfe Parameter Höhe!",
+      title: "Gebirge konnte nicht hinzugefügt werden. Überprüfe Attribut Höhe!",
     });
     return false;
+    // url
   } else if (geojson.properties.url == null || geojson.properties.url == "") {
     res.render("notification", {
-      title: "Gebirge konnte nicht hinzugefügt werden. Überprüfe Parameter URL!",
+      title: "Gebirge konnte nicht hinzugefügt werden. Überprüfe Attribut URL!",
     });
     return false;
+    //description
+  } else if (geojson.properties.description == null || geojson.properties.description != "") {
+    res.render("notification", {
+      title: "Gebirge konnte nicht hinzugefügt werden. Überprüfe Attribut Beschreibung!",
+    });
+    return false;
+    //geometry
   } else if (geojson.geometry == null) {
     res.render("notification", {
       title: "Gebirge konnte nicht hinzugefügt werden. Überprüfe Angabe von Koordinaten!",
     });
     return false;
+    //coordinates
   } else if (geojson.geometry.coordinates[0] == null || geojson.geometry.coordinates[1] == null || geojson.geometry.coordinates[0] == "" || geojson.geometry.coordinates[1] == "") {
     res.render("notification", {
       title: "Gebirge konnte nicht hinzugefügt werden. Überprüfe Koordinaten!",
     });
     return false;
+
   } else {
     return true;
   }
