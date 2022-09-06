@@ -12,6 +12,9 @@ const client = new MongoClient(url, { useUnifiedTopology: true }); // mongodb cl
 const dbName = "mydatabase"; // database name
 const collectionName = "mountain"; // collection name
 
+let description = "";
+
+
 /* GET home page. */
 router.get("/", function (req, res, next) {
   res.render("add", { title: "Gebirge hinzufügen" });
@@ -20,51 +23,26 @@ router.get("/", function (req, res, next) {
 
 // added Mountain through textfield
 router.post("/new_mountain_textfield", function (req, res, next) {
-  mountain = JSON.parse(req.body.textfield);
-  if (validateGeoJSON(mountain, res)) {
-
-    const description = getWikiSnippet(mountain.properties.url);
-    mountain.properties.description = description;
-
-
-    // connect to the mongodb database and afterwards, insert one the new element
-    client.connect(function (err) {
-      //assert.equal(null, err);
-
-      console.log("Connected successfully to server");
-      console.log("A new Mountain has been added");
-      console.log(mountain);
-
-      const db = client.db(dbName);
-      const collection = db.collection(collectionName);
-
-      // Insert the document in the database
-      collection.insertOne(mountain, function (err, result) {
-        //assert.equal(err, null);
-        //assert.equal(1, result.result.ok);
-        console.log(
-          `Inserted ${result.insertedCount} document into the collection`);
-        res.render("notification", { title: "Gebirge hinzugefügt!", data: JSON.stringify(mountain) });
-      });
+  try {
+    JSON.parse(req.body.textfield);
+  }
+  catch (err) {
+    res.render("notification", {
+      title: "Gebirge konnte nicht hinzugefügt werden. Überprüfe GeoJSON-Syntax!",
     });
   }
-});
+  let mountain = JSON.parse(req.body.textfield);
 
+  if (validateFormat(mountain, res)) {
 
+    getWikiSnippet(mountain.properties.url);
 
-// added Mountain through fileupload
-router.post("/new_mountain_file", function (req, res, next) {
-
-  fs.readFile(req.body.file, "utf8", function (err, data) {
-    const mountain = JSON.parse(data);
-    if (validateGeoJSON(mountain, res)) {
-
-      const description = getWikiSnippet(mountain.properties.url);
+    //waits for getWikiSnippet to resolve promise
+    setTimeout(function () {
       mountain.properties.description = description;
 
       // connect to the mongodb database and afterwards, insert one the new element
       client.connect(function (err) {
-        //assert.equal(null, err);
 
         console.log("Connected successfully to server");
         console.log("A new Mountain has been added");
@@ -75,114 +53,182 @@ router.post("/new_mountain_file", function (req, res, next) {
 
         // Insert the document in the database
         collection.insertOne(mountain, function (err, result) {
-          //assert.equal(err, null);
-          //assert.equal(1, result.result.ok);
           console.log(
             `Inserted ${result.insertedCount} document into the collection`);
           res.render("notification", { title: "Gebirge hinzugefügt!", data: JSON.stringify(mountain) });
         });
       });
+    }, 1500);
+  }
+});
+
+
+// added Mountain through fileupload
+router.post("/new_mountain_file", function (req, res, next) {
+
+  fs.readFile(req.body.file, "utf8", function (err, data) {
+
+    try {
+      JSON.parse(data);
+    }
+    catch (err) {
+      res.render("notification", {
+        title: "Gebirge konnte nicht hinzugefügt werden. Überprüfe GeoJSON-Syntax!",
+      });
+    }
+    let mountain = JSON.parse(data);
+
+    if (validateGeoJSON(mountain, res)) {
+
+      getWikiSnippet(mountain.properties.url);
+
+      //waits for getWikiSnippet to resolve promise
+      setTimeout(function () {
+        mountain.properties.description = description;
+
+        // connect to the mongodb database and afterwards, insert one the new element
+        client.connect(function (err) {
+
+          console.log("Connected successfully to server");
+          console.log("A new Mountain has been added");
+          console.log(mountain);
+
+          const db = client.db(dbName);
+          const collection = db.collection(collectionName);
+
+          // Insert the document in the database
+          collection.insertOne(mountain, function (err, result) {
+            console.log(
+              `Inserted ${result.insertedCount} document into the collection`);
+            res.render("notification", { title: "Gebirge hinzugefügt!", data: JSON.stringify(mountain) });
+          });
+        });
+      }, 1500);
     }
   });
 });
 
 
-
 // added Mountain through Leaflet
 router.post("/new_mountain_leaflet", function (req, res, next) {
+
+  //Checks if input is correct
   if (req.body.mountain == "" || req.body.altitude == "" || req.body.long == "" || req.body.lat == "") {
     res.render("notification", {
       title: "Gebirge konnte nicht hinzugefügt werden. Überprüfe Eingabe!",
     });
   } else {
 
-    const description = getWikiSnippet(req.body.url);
+    getWikiSnippet(req.body.url);
 
-    let mountain = {
-      "type": "Feature",
-      "properties": {
-        "shape": "Marker",
-        "name": req.body.mountain,
-        "altitude": req.body.altitude,
-        "url": req.body.url,
-        "description": description
-      },
-      "geometry": {
-        "type": "Point",
-        "coordinates": [req.body.long, req.body.lat]
-      },
-    };
+    //waits for getWikiSnippet to resolve promise
+    setTimeout(function () {
 
-    // connect to the mongodb database and afterwards, insert one the new element
-    client.connect(function (err) {
-      //assert.equal(null, err);
+      //Feature Mountain
+      let mountain = {
+        "type": "Feature",
+        "properties": {
+          "shape": "Marker",
+          "name": req.body.mountain,
+          "altitude": req.body.altitude,
+          "url": req.body.url,
+          "description": description
+        },
+        "geometry": {
+          "type": "Point",
+          "coordinates": [req.body.long, req.body.lat]
+        },
+      };
 
-      console.log("Connected successfully to server");
-      console.log("A new Mountain has been added");
-      console.log(mountain);
+      // connect to the mongodb database and afterwards, insert one the new element
+      client.connect(function (err) {
 
-      const db = client.db(dbName);
-      const collection = db.collection(collectionName);
+        console.log("Connected successfully to server");
+        console.log("A new Mountain has been added");
+        console.log(mountain);
 
-      // Insert the document in the database
-      collection.insertOne(mountain, function (err, result) {
-        //assert.equal(err, null);
-        //assert.equal(1, result.result.ok);
-        console.log(
-          `Inserted ${result.insertedCount} document into the collection`);
-        res.render("notification", { title: "Gebirge hinzugefügt!", data: JSON.stringify(mountain) });
+        const db = client.db(dbName);
+        const collection = db.collection(collectionName);
+
+        // Insert the document in the database
+        collection.insertOne(mountain, function (err, result) {
+          console.log(
+            `Inserted ${result.insertedCount} document into the collection`);
+          res.render("notification", { title: "Gebirge hinzugefügt!", data: JSON.stringify(mountain) });
+        });
       });
-    });
+    }, 1500);
   };
 });
 
 
 /**
- * Validation of GeoJSON Files
+ * Validates the parameters of the geojson file
  * @param {*} file 
  * @returns 
  */
-function validateGeoJSON(file, res) {
-  if (file.name == "" || file.altitude == "" || file.url == "") {
+function validateFormat(geojson, res) {
+
+  if (geojson.properties == null) {
     res.render("notification", {
-      title: "Gebirge konnte nicht hinzugefügt werden. Überprüfe Eingabe!",
+      title: "Gebirge konnte nicht hinzugefügt werden. Überprüfe Angabe von Properties!",
     });
     return false;
-  }
-  if (!gjv.valid(file)) {
+  } else if (geojson.properties.name == null || geojson.properties.name == "") {
     res.render("notification", {
-      title: "Gebirge konnte nicht hinzugefügt werden. Überprüfe GeoJSON-Syntax!",
+      title: "Gebirge konnte nicht hinzugefügt werden. Überprüfe Parameter Name!",
     });
     return false;
+  } else if (geojson.properties.altitude == null || geojson.properties.altitude == "") {
+    res.render("notification", {
+      title: "Gebirge konnte nicht hinzugefügt werden. Überprüfe Parameter Höhe!",
+    });
+    return false;
+  } else if (geojson.properties.url == null || geojson.properties.url == "") {
+    res.render("notification", {
+      title: "Gebirge konnte nicht hinzugefügt werden. Überprüfe Parameter URL!",
+    });
+    return false;
+  } else if (geojson.geometry == null) {
+    res.render("notification", {
+      title: "Gebirge konnte nicht hinzugefügt werden. Überprüfe Angabe von Koordinaten!",
+    });
+    return false;
+  } else if (geojson.geometry.coordinates[0] == null || geojson.geometry.coordinates[1] == null || geojson.geometry.coordinates[0] == "" || geojson.geometry.coordinates[1] == "") {
+    res.render("notification", {
+      title: "Gebirge konnte nicht hinzugefügt werden. Überprüfe Koordinaten!",
+    });
+    return false;
+  } else {
+    return true;
   }
-  return true;
 };
+
 
 /**
  * if url is valide and a wikipedia-url
- * then returns the snippet from Wikipedia with the WikipediaAPI
- * otherwise returns "Keine Informationen verfügbar"
+ * then sets @param description to the snippet from Wikipedia with the WikipediaAPI
+ * otherwise sets @param description to "Keine Informationen verfügbar"
  * @param {*} url 
  * @returns description
  */
 function getWikiSnippet(url) {
-  let description = "";
+
   if (!isValidUrl(url) || url.indexOf("wikipedia") === -1) {
+
     description = "Keine Informationen verfügbar";
-    console.log("not valid: " + description);
-    return description;
+
   } else {
+
     let urlArray = url.split("/");
     let title = urlArray[urlArray.length - 1];
+
     axios.get(
       "https://de.wikipedia.org/w/api.php?format=json&exintro=1&action=query&prop=extracts&explaintext=1&exsentences=1&origin=*&titles=" + title
-    )
-      .then(function (response) {
-        const pageKey = Object.keys(response.data.query.pages)[0];
-        const result = "\"" + response.data.query.pages[pageKey].extract + "\"";
-        console.log("valid: " + result);
-        return result;
-      });
+    ).then(function (response) {
+      const pageKey = Object.keys(response.data.query.pages)[0];
+      description = response.data.query.pages[pageKey].extract;
+    });
   }
 }
 
