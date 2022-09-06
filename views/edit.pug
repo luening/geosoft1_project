@@ -5,13 +5,17 @@ block content
   p Welcome to #{title}
   br
   br
+  #map
   form(action='/edit/search_mountain' method='post')
     fieldset
+      .form-group.row
+        label.col-sm-1.col-form-label(for='id') ID
+        .col-sm-4
+          input#id.form-control(type='text' name="id" readonly)
       .form-group.row
         label.col-sm-1.col-form-label(for='mountain') Gebirge
         .col-sm-4
           input#mountain.form-control(type='text' name="mountain")
-      button.btn.btn-primary.mb-2(type='submit') Suchen
       .form-group.row
         label.col-sm-1.col-form-label(for='altitude') Höhe
         .col-sm-4
@@ -36,3 +40,10 @@ block content
   form(action='/edit/update_mountain' method='post')
     fieldset
       button.btn.btn-primary.mb-2(type='submit') Bearbeiten
+
+
+  script. 
+    let geojson = !{JSON.stringify(data)}
+
+  block scripts 
+    script(src="/javascripts/edit_mountain.js")
