@@ -8,9 +8,25 @@ const client = new MongoClient(url, { useUnifiedTopology: true}); // mongodb cli
 const dbName = "mydatabase"; // database name
 const collectionName = "mountain"; // collection name
 
-/* GET home page. */
+//GET home page
 router.get("/", function (req, res, next) {
-  res.render("direction", { title: "Route zu Gebirge" });
+  // connect to the mongodb database and retrieve all docs
+  client.connect(function (err) {
+    assert.equal(null, err);
+
+    console.log('Connected successfully to server');
+
+    const db = client.db(dbName);
+    const collection = db.collection(collectionName);
+
+    collection.find({}).toArray(function (err, docs) {
+      assert.equal(err, null);
+      console.log('Found the following records...');
+      res.render('direction', { title: 'Route', data: docs });
+
+    })
+
+  })
 });
 
 module.exports = router;
