@@ -5,8 +5,32 @@ block content
   p Welcome to #{title}
   br
   br
+  input#location(type="submit", name="location", value="Standort bestimmen")
+  input#longLocation(type="text" readonly)
+  input#latLocation(type="text" readonly)
+
+  br
+  br
   #map
+  form(action='/edit/update_mountain' method='post')
+    fieldset
+      .form-group.row
+        label.col-form-label(for='mountain') Name
+        .col-sm-4
+          input#mountain.form-control(type='text' name="mountain" readonly)
+      .form-group.row
+        label.col-form-label(for='long') Longitude
+        .col-sm-4
+          input#long.form-control(type='text' name="long" readonly)
+      .form-group.row
+        label.col-form-label(for='lat') Latitude
+        .col-sm-4
+          input#lat.form-control(type='text' name="lat")
+      button.btn.btn-primary.mb-2(type='submit' value="route") Route berechnen
 
 
-block scripts 
-    script(src="/javascripts/direction.js" defer)
+  script. 
+    let geojson = !{JSON.stringify(data)}
+
+  block scripts 
+    script(src="/javascripts/direction_mountain.js" defer)
