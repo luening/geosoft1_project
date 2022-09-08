@@ -6,40 +6,39 @@ block content
   br
   br
   #map
-  form(action='/edit/search_mountain' method='post')
+  form(action='/edit/update_mountain' method='post')
     fieldset
       .form-group.row
-        label.col-sm-1.col-form-label(for='id') ID
+        label.col-form-label(for='id') ID
         .col-sm-4
           input#id.form-control(type='text' name="id" readonly)
       .form-group.row
-        label.col-sm-1.col-form-label(for='mountain') Gebirge
+        label.col-form-label(for='mountain') Name
         .col-sm-4
           input#mountain.form-control(type='text' name="mountain")
       .form-group.row
-        label.col-sm-1.col-form-label(for='altitude') Höhe
+        label.col-form-label(for='altitude') Höhe
         .col-sm-4
-          input#altitude.form-control(type='text' name="altitude")
+          input#altitude.form-control(type='number' name="altitude")
       .form-group.row
-        label.col-sm-1.col-form-label(for='url') URL
+        label.col-form-label(for='url') URL
         .col-sm-4
           input#url.form-control(type='text' name="url")
       .form-group.row
-        label.col-sm-1.col-form-label(for='long') Longitude
+        label.col-form-label(for='description') Beschreibung
+        .col-sm-4
+          input#description.form-control(type='text' name="description" readonly)
+      .form-group.row
+        label.col-form-label(for='long') Longitude
         .col-sm-4
           input#long.form-control(type='text' name="long")
       .form-group.row
-        label.col-sm-1.col-form-label(for='lat') Latitude
+        label.col-form-label(for='lat') Latitude
         .col-sm-4
           input#lat.form-control(type='text' name="lat")
+      button.btn.btn-primary.mb-2(type='submit' value="speichern") Speichern
+      button.btn.btn-primary.mb-2(type='submit' formaction="/edit/delete_mountain") Löschen
 
-  form(action='/edit/delete_mountain' method='post')
-    fieldset
-      button.btn.btn-primary.mb-2(type='submit') Löschen
-
-  form(action='/edit/update_mountain' method='post')
-    fieldset
-      button.btn.btn-primary.mb-2(type='submit') Bearbeiten
 
 
   script. 
