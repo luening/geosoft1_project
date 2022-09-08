@@ -12,10 +12,11 @@ const client = new MongoClient(url, { useUnifiedTopology: true }); // mongodb cl
 const dbName = "mydatabase"; // database name
 const collectionName = "mountain"; // collection name
 
+//global attribute
 let description = "";
 
 
-/* GET home page. */
+//GET home page
 router.get("/", function (req, res, next) {
   res.render("add", { title: "Gebirge hinzufügen" });
 });
@@ -89,7 +90,7 @@ router.post("/new_mountain_file", function (req, res, next) {
       setTimeout(function () {
         mountain.properties.description = description;
 
-        // connect to the mongodb database and afterwards, insert one the new element
+        // connect to the mongodb database
         client.connect(function (err) {
 
           console.log("Connected successfully to server");
@@ -228,7 +229,6 @@ function validateFormat(geojson, res) {
  * then sets @param description to the snippet from Wikipedia with the WikipediaAPI
  * otherwise sets @param description to "Keine Informationen verfügbar"
  * @param {*} url 
- * @returns description
  */
 function getWikiSnippet(url) {
 
@@ -255,7 +255,8 @@ function getWikiSnippet(url) {
  * Validation of URLs
  * https://stackoverflow.com/questions/5717093/check-if-a-javascript-string-is-a-url
  * @param {*} string 
- * @returns 
+ * @returns true for vaild url
+ *          false for unvaild url
  */
 function isValidUrl(string) {
   let url;
