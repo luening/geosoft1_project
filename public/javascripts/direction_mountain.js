@@ -1,3 +1,8 @@
+var longLocation = document.getElementById("longLocation");
+var latLocation = document.getElementById("latLocation");
+var longDestination = document.getElementById("long");
+var latDestination = document.getElementById("lat");
+
 let locationButton = document.getElementById("location");
 locationButton.addEventListener("click", getLocation);
 
@@ -34,8 +39,8 @@ geojson.forEach((element) => {
 function getLocation() {
   if (navigator.geolocation) {
     navigator.geolocation.getCurrentPosition(function (position) {
-      document.getElementById("longLocation").value = position.coords.longitude;
-      document.getElementById("latLocation").value = position.coords.latitude;
+      longLocation.value = position.coords.longitude;
+      latLocation.value = position.coords.latitude;
     })
   }
 };
