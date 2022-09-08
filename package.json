@@ -16,6 +16,7 @@
     "leaflet": "^1.8.0",
     "leaflet-draw": "^1.0.4",
     "mongodb": "^4.7.0",
+    "mongoose": "^6.5.5",
     "morgan": "~1.9.1",
     "pug": "^3.0.2",
     "with": "^7.0.2"
