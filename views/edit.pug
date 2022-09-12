@@ -2,6 +2,8 @@ extends layout
 
 block content
   h1= title
+  p Um ein Gebrige zu bearbeiten oder zu löschen, müssen Sie zuerst ein Gebirge auf der Karte auswählen. Dann können Sie Attribute ihrer Wahl ändern und das Gebrige dann speichern oder es direkt löschen. 
+  p Achtung: Erst wenn Sie Speichern klicken, werden die veränderten Attribute übernommen.
   br
   #map
   form(action='/edit/update_mountain' method='post')

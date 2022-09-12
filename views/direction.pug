@@ -2,11 +2,9 @@ extends layout
 
 block content
   h1= title
-  br
   p Anleitung: Bevor die Route berechnet werden kann, muss der eigene Standort bestimmt und ein Gebirge ausgewählt werden.
   br
   h2 Startpunkt
-  br
   input#location(type="submit", name="location", value="Standort bestimmen")
   input#longLocation(type="text" readonly)
   input#latLocation(type="text" readonly)
@@ -14,8 +12,8 @@ block content
   br
   br
   h2 Ziel
-  br
   #map
+  br
   form(action='/edit/update_mountain' method='post')
     fieldset
       .form-group.row
@@ -33,7 +31,6 @@ block content
   input#route(type="submit", name="route", value="Route berechnen")
   br
   h2 Route
-  br
   #mapRoute
 
 
