@@ -38,3 +38,6 @@ th{
     text-align: top;
     border: 1px solid black;
   }
+  tr:hover {
+    background-color: aliceblue;
+  }
