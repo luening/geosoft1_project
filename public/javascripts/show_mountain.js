@@ -50,7 +50,7 @@ geojson.forEach((element) => {
 
   //table
   var tr = document.createElement('tr');
-  tr.innerHTML = "<td>" + element._id + "</td>" + element.properties.name + "</td><td>" + element.properties.altitude + "</td><td>" + element.properties.url + "</td><td>" + element.properties.description + "</td>";
+  tr.innerHTML = "<td>" + element._id + "</td><td>" + element.properties.name + "</td><td>" + element.properties.altitude + "</td><td>" + element.properties.url + "</td><td>" + element.properties.description + "</td>";
   tr.addEventListener("click", highlightMountain);
   table.appendChild(tr); // appends to the tbody element
 });
