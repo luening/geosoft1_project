@@ -3,8 +3,6 @@ var router = express.Router();
 
 const MongoClient = require("mongodb").MongoClient;
 
-const assert = require("assert");
-
 var mongoose = require("mongoose");
 const { ObjectId } = mongoose.Types;
 
