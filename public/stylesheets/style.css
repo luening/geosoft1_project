@@ -1,43 +1,75 @@
-body {
-  padding: 50px;
-  font: 14px "Lucida Grande", Helvetica, Arial, sans-serif;
+@media (max-width: 970px) {
+  body {
+    padding: 10px;
+    font: 14px "Lucida Grande", Helvetica, Arial, sans-serif;
+  }
+  
+  a {
+    color: #00B7FF;
+  }
+  
+  #map {
+    height: 400px;
+    width: 80%;
+  }
+
+  #mapRoute {
+    height: 400px;
+    width: 80%;
+  }
 }
 
-a {
-  color: #00B7FF;
+@media (min-width: 970px) {
+  body {
+    padding: 50px;
+    font: 12px "Lucida Grande", Helvetica, Arial, sans-serif;
+  }
+  
+  a {
+    color: #00B7FF;
+  }
+  
+  #map {
+    height: 600px;
+    width: 80%;
+  }
+
+  #mapRoute {
+    height: 600px;
+    width: 80%;
+  }
 }
 
-#map{
-  height: 500px;
-  width: 70%;
+.navbar{
+  background-color: gainsboro;
+  padding-top: 15px;
+  padding-bottom: 15px;
 }
 
-#mapRoute{
-  height: 500px;
-  width: 70%;
-}
-
-#table-wrapper{
+#table-wrapper {
   display: flex;
 }
 
 
-#table{
+#table {
   width: 70%;
   border: 2px solid black;
   border-collapse: collapse;
-  
+
 }
-th{
-    text-align: left;
-    border: 1px solid black;  
-    background-color: gainsboro;
-  }
-  td{
-    text-align: left;
-    text-align: top;
-    border: 1px solid black;
-  }
-  tr:hover {
-    background-color: aliceblue;
-  }
+
+th {
+  text-align: left;
+  border: 1px solid black;
+  background-color: gainsboro;
+}
+
+td {
+  text-align: left;
+  text-align: top;
+  border: 1px solid black;
+}
+
+tr:hover {
+  background-color: aliceblue;
+}
