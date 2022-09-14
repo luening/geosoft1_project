@@ -5,6 +5,9 @@ block content
   p Hier können Sie neue Gebirge hinzufügen. Dafür können Sie entweder Gebirge im GeoJSON-Format mit dem Textfeld hinzufügen, eine GeoJson-Datei hinzufügen oder ein Gebirge mit den Eingabefeldern und der Leaflet-Karte einfügen.
   br
   br
+  p GeoJSON-Format: 
+  p { "type": "Feature","geometry": {"type": "Point","coordinates": [Längengrad,Breitengrad]},"properties": {"name": "Gebirgsname","altitude": 00 ,"url": "Wikipedia-URL","description": "leer lassen"}}  
+  br
   p Gebirge im GeoJSON-Format
   form(action='/add/new_mountain_textfield' method='post')
     fieldset
