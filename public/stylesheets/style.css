@@ -56,30 +56,46 @@
   list-style-type: none;
 }
 
+
+/*------------------------------------------------------------------*/
+
+
+
 #table-wrapper {
   display: flex;
-}
+  }
 
 
-#table {
+#showtable {
   width: 70%;
   border: 2px solid black;
   border-collapse: collapse;
-
 }
 
-th {
-  text-align: left;
-  border: 1px solid black;
-  background-color: gainsboro;
-}
 
-td {
-  text-align: left;
-  text-align: top;
-  border: 1px solid black;
-}
+  th {
+    text-align: left;
+    border: 1px solid black;
+    background-color: gainsboro;
+    }
+  
+   td {
+    text-align: left;
+    text-align: top;
+    border: 1px solid black;
+   }
+  
+  tr:hover {
+    background-color: aliceblue;
+   }
 
-tr:hover {
-  background-color: aliceblue;
-}
+   #imprTABLE {
+    border: 1px solid blue;
+    border-collapse: collapse;
+
+   }
+
+   #imprTD{
+    border: 1px white;
+    margin-left: 50px;
+   }
